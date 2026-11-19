@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blinkit — groceries delivered in minutes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --ink: #1d2722;
+      --muted: #78817b;
+      --green: #0c831f;
+      --yellow: #f8cb46;
+      --line: #edf0ed;
+      --soft-green: #f2f8ef;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font-family: "DM Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-shell {
+      max-width: 1280px;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      background: rgba(255, 255, 255, .97);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-main {
+      min-height: 82px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      color: #242424;
+      background: var(--yellow);
+      border-radius: 12px;
+      font-size: 25px;
+      letter-spacing: 0;
+      box-shadow: inset 0 -3px 0 rgba(198, 143, 0, .13);
+    }
+
+    .delivery {
+      min-width: 180px;
+    }
+
+    .delivery strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .delivery span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .delivery i {
+      font-size: 11px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 15px;
+      color: #7d8580;
+      background: #f5f7f5;
+      border: 1px solid #f0f2f0;
+      border-radius: 12px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0 10px;
+      color: var(--ink);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font-size: 14px;
+    }
+
+    .search-box input::placeholder {
+      color: #929a95;
+    }
+
+    .login-link {
+      color: #303833;
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .cart-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 16px;
+      color: white;
+      background: var(--green);
+      border: 0;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .category-nav {
+      display: flex;
+      gap: 32px;
+      overflow-x: auto;
+      padding: 15px 0 14px;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+
+    .category-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-nav a {
+      color: #4a544e;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .category-nav a:first-child {
+      color: var(--green);
+    }
+
+    .essentials-banner {
+      position: relative;
+      display: flex;
+      min-height: 240px;
+      overflow: hidden;
+      align-items: center;
+      padding: 28px 36px;
+      color: #fff;
+      background:
+        linear-gradient(90deg, #317d3d 0%, #317d3d 26%, rgba(49, 125, 61, .94) 39%, rgba(49, 125, 61, .28) 67%, rgba(49, 125, 61, 0) 100%),
+        url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1800&q=85") center 52% / cover no-repeat;
+      border-radius: 15px;
+    }
+
+    .essentials-copy {
+      position: relative;
+      z-index: 1;
+      width: 58%;
+    }
+
+    .essentials-banner h1 {
+      margin: 0 0 8px;
+      font-size: clamp(32px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -.8px;
+      line-height: 1.12;
+    }
+
+    .essentials-banner p {
+      max-width: 620px;
+      margin: 0 0 20px;
+      font-size: clamp(17px, 2.2vw, 27px);
+      line-height: 1.35;
+    }
+
+    .shop-button {
+      display: inline-flex;
+      min-height: 39px;
+      align-items: center;
+      padding: 7px 13px;
+      color: #303633;
+      background: #fff;
+      border: 0;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .promo-tiles {
+      margin-top: 20px;
+    }
+
+    .promo-card {
+      position: relative;
+      display: flex;
+      min-height: 195px;
+      overflow: hidden;
+      align-items: center;
+      padding: 18px 16px;
+      isolation: isolate;
+      color: var(--tile-text, #fff);
+      background: var(--tile-color);
+      border-radius: 16px;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .promo-card::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      content: "";
+      background: linear-gradient(90deg, var(--tile-color) 0%, var(--tile-color) 35%, transparent 92%);
+    }
+
+    .promo-card:hover {
+      color: var(--tile-text, #fff);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(32, 54, 38, .12);
+    }
+
+    .promo-card img {
+      position: absolute;
+      z-index: -2;
+      top: 0;
+      right: 0;
+      width: 67%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .promo-copy {
+      width: 76%;
+    }
+
+    .promo-copy strong {
+      display: block;
+      max-width: 250px;
+      margin-bottom: 7px;
+      font-size: clamp(18px, 1.8vw, 24px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .promo-copy span {
+      display: block;
+      max-width: 220px;
+      min-height: 34px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .order-button {
+      display: inline-flex;
+      min-height: 31px;
+      align-items: center;
+      margin-top: 11px;
+      padding: 5px 13px;
+      color: #303633;
+      background: #fff;
+      border: 0;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .promo-card-pharmacy {
+      --tile-color: #08b8ad;
+    }
+
+    .promo-card-pets {
+      --tile-color: #ffcc32;
+      --tile-text: #34332b;
+    }
+
+    .promo-card-baby {
+      --tile-color: #d3e2f5;
+      --tile-text: #343b44;
+    }
+
+    .promo-card-pets .order-button,
+    .promo-card-baby .order-button {
+      color: #fff;
+      background: #343634;
+    }
+
+    .market-categories {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 18px 14px;
+      margin-top: 24px;
+    }
+
+    .market-category {
+      min-width: 0;
+      color: #303633;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .market-category-image {
+      display: grid;
+      aspect-ratio: 1;
+      overflow: hidden;
+      place-items: center;
+      padding: 8px;
+      background: #f0f7ff;
+      border-radius: 13px;
+    }
+
+    .market-category img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      mix-blend-mode: multiply;
+      transition: transform .2s ease;
+    }
+
+    .market-category:hover img {
+      transform: scale(1.06);
+    }
+
+    .market-category span {
+      display: block;
+      min-height: 36px;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    footer {
+      margin-top: 52px;
+      border-top: 1px solid var(--line);
+      color: #53605a;
+    }
+
+    .footer-mobile-brand {
+      display: none;
+    }
+
+    .footer-accordion {
+      border: 0;
+    }
+
+    .footer-accordion>summary {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 0;
+      color: #272d29;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      list-style: none;
+    }
+
+    .footer-accordion>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .footer-accordion>summary::after {
+      content: "+";
+      color: #53605a;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .footer-accordion[open]>summary::after {
+      content: "−";
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(0, 1.7fr);
+      gap: 34px;
+      padding: 22px 0 32px;
+    }
+
+    .footer-group-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      color: #171d19;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .footer-group-heading h2 {
+      margin: 0;
+      font: inherit;
+    }
+
+    .footer-group-heading a {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: #65716b;
+      font-size: 13px;
+      line-height: 1.4;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--green);
+    }
+
+    .footer-bottom {
+      background: #fafafa;
+      border-top: 1px solid #f4f4f4;
+      border-bottom: 1px solid #f4f4f4;
+    }
+
+    .footer-bottom-inner {
+      display: flex;
+      min-height: 78px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-copyright {
+      color: #65716b;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .download-app {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-right: 10px;
+      color: #53605a;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .store-badge {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      color: white;
+      background: #203342;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .store-badge i {
+      font-size: 17px;
+    }
+
+    .social-link {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      color: white;
+      background: #202020;
+      border-radius: 50%;
+      font-size: 17px;
+      text-decoration: none;
+    }
+
+    .footer-legal {
+      padding: 12px 0 16px;
+      color: #78817b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 767.98px) {
+      .header-main {
+        min-height: 70px;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+      }
+
+      .delivery {
+        min-width: 0;
+      }
+
+      .delivery strong {
+        font-size: 12px;
+      }
+
+      .delivery span {
+        font-size: 10px;
+      }
+
+      .search-wrap {
+        padding-bottom: 12px;
+      }
+
+      .category-nav {
+        gap: 24px;
+        padding-top: 12px;
+      }
+
+      .essentials-banner {
+        min-height: 220px;
+        padding: 24px;
+        background-position: center, 60% center;
+      }
+
+      .essentials-copy {
+        width: 72%;
+      }
+
+      .essentials-banner h1 {
+        font-size: clamp(26px, 6vw, 36px);
+      }
+
+      .essentials-banner p {
+        max-width: 360px;
+        font-size: 16px;
+      }
+
+      .promo-tiles {
+        margin-top: 14px;
+      }
+
+      .promo-card {
+        min-height: 170px;
+        padding: 14px;
+      }
+
+      .promo-copy {
+        width: 85%;
+      }
+
+      .promo-copy strong {
+        font-size: 18px;
+      }
+
+      .promo-copy span {
+        max-width: 170px;
+        font-size: 11px;
+      }
+
+      .market-categories {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px 10px;
+        margin-top: 18px;
+      }
+
+      .market-category-image {
+        padding: 5px;
+        border-radius: 10px;
+      }
+
+      .market-category span {
+        font-size: 11px;
+      }
+
+      footer {
+        margin-top: 36px;
+      }
+
+      .footer-mobile-brand {
+        display: block;
+        padding: 28px 0 34px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .footer-mobile-brand h2 {
+        max-width: 340px;
+        margin: 0;
+        color: #cbd1d9;
+        font-size: clamp(35px, 10vw, 48px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.02;
+      }
+
+      .footer-mobile-brand h2 i {
+        color: #ff625a;
+        font-size: .72em;
+      }
+
+      .footer-mobile-wordmark {
+        margin-top: 24px;
+        color: #d7dce1;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .footer-accordion>summary {
+        display: flex;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 22px 0 26px;
+      }
+
+      .footer-group-heading {
+        margin-bottom: 14px;
+        font-size: 16px;
+      }
+
+      .footer-links {
+        gap: 9px 12px;
+      }
+
+      .footer-links a {
+        font-size: 13px;
+      }
+
+      .footer-bottom-inner {
+        min-height: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 18px;
+        padding-bottom: 18px;
+      }
+
+      .footer-copyright {
+        white-space: normal;
+      }
+
+      .footer-socials {
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .download-app {
+        width: 100%;
+        margin: 0 0 3px;
+      }
+
+      .footer-legal {
+        padding-top: 12px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .login-link {
+        font-size: 13px;
+      }
+
+      .cart-button {
+        min-height: 40px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .delivery {
+        max-width: 138px;
+      }
+
+      .delivery strong {
+        font-size: 11px;
+      }
+
+      .essentials-banner {
+        min-height: 210px;
+        padding: 20px;
+        background-position: center, 58% center;
+      }
+
+      .essentials-copy {
+        width: 82%;
+      }
+
+      .essentials-banner h1 {
+        max-width: 280px;
+        font-size: 28px;
+      }
+
+      .essentials-banner p {
+        max-width: 250px;
+        font-size: 14px;
+      }
+
+      .promo-card {
+        min-height: 150px;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .market-categories {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container page-shell">
+      <div class="header-main d-flex align-items-center gap-3 gap-md-4">
+        <a class="brand flex-shrink-0" href="#" aria-label="Blinkit home">
+          <span class="brand-mark">b</span>
+          <span class="d-none d-sm-inline">blinkit</span>
+        </a>
+        <div class="delivery d-none d-sm-block">
+          <strong>Delivery in 16 minutes</strong>
+          <span>Indiranagar, Bengaluru <i class="bi bi-chevron-down ms-1"></i></span>
+        </div>
+        <div class="delivery d-sm-none">
+          <strong>Delivery in 16 minutes</strong>
+          <span>Choose your location <i class="bi bi-chevron-down ms-1"></i></span>
+        </div>
+        <div class="search-wrap flex-grow-1 d-none d-md-block">
+          <label class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="search" aria-label="Search products" placeholder='Search "milk"'>
+            <i class="bi bi-mic"></i>
+          </label>
+        </div>
+        <a class="login-link ms-auto ms-md-0" href="#">Login</a>
+        <button class="cart-button" type="button"><i class="bi bi-basket2-fill"></i><span>My Cart</span></button>
+      </div>
+      <div class="search-wrap d-md-none">
+        <label class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="search" aria-label="Search products" placeholder='Search "milk"'>
+          <i class="bi bi-mic"></i>
+        </label>
+      </div>
+      <nav class="category-nav" aria-label="Shop departments">
+        <a href="#">All</a>
+        <a href="#">Vegetables &amp; Fruits</a>
+        <a href="#">Dairy &amp; Breakfast</a>
+        <a href="#">Munchies</a>
+        <a href="#">Cold Drinks &amp; Juices</a>
+        <a href="#">Instant &amp; Frozen Food</a>
+        <a href="#">Tea, Coffee &amp; Health Drink</a>
+        <a href="#">Bakery &amp; Biscuits</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-shell pb-4">
+    <section class="essentials-banner mt-4" aria-label="Daily essentials promotion">
+      <div class="essentials-copy">
+        <h1>Stock up on daily essentials</h1>
+        <p>Get farm-fresh goodness &amp; a range of exotic fruits, vegetables, eggs &amp; more</p>
+        <a class="shop-button" href="#groceries">Shop Now</a>
+      </div>
+    </section>
+
+    <section class="promo-tiles row g-3" aria-label="More ways to shop">
+      <div class="col-12 col-md-4">
+        <a class="promo-card promo-card-pharmacy" href="#groceries">
+          <img src="assets/images/pharma.jpg"
+            alt="">
+          <span class="promo-copy">
+            <strong>Pharmacy at<br>your doorstep!</strong>
+            <span>Cough syrups, pain relief sprays &amp; more</span>
+            <span class="order-button">Order Now</span>
+          </span>
+        </a>
+      </div>
+      <div class="col-12 col-md-4">
+        <a class="promo-card promo-card-pets" href="#groceries">
+          <img src="assets/images/dog.jpg"
+            alt="">
+          <span class="promo-copy">
+            <strong>Pet care supplies<br>at your door</strong>
+            <span>Food, treats, toys &amp; more</span>
+            <span class="order-button">Order Now</span>
+          </span>
+        </a>
+      </div>
+      <div class="col-12 col-md-4">
+        <a class="promo-card promo-card-baby" href="#groceries">
+          <img src="assets/images/baby.jpg"
+            alt="">
+          <span class="promo-copy">
+            <strong>No time for<br>a diaper run?</strong>
+            <span>Get baby care essentials</span>
+            <span class="order-button">Order Now</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section id="groceries" class="market-categories" aria-label="Shop grocery categories">
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/paan.jpg"
+            alt=""></span><span>Paan Corner</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/dairy.jpg"
+            alt=""></span><span>Dairy, Bread<br>&amp; Eggs</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/fruits.jpg"
+            alt=""></span><span>Fruits &amp;<br>Vegetables</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/drinks.jpg"
+            alt=""></span><span>Cold Drinks<br>&amp; Juices</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/snacks.jpg"
+            alt=""></span><span>Snacks &amp;<br>Munchies</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/books.jpg"
+            alt=""></span><span>Breakfast &amp;<br>Instant Food</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/sweet.jpg"
+            alt=""></span><span>Sweet Tooth</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/bakery.jpg"
+            alt=""></span><span>Bakery &amp;<br>Biscuits</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/tea.jpg"
+            alt=""></span><span>Tea, Coffee &amp;<br>Milk Drinks</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/rice.jpg"
+            alt=""></span><span>Atta, Rice<br>&amp; Dal</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/masala.jpg"
+            alt=""></span><span>Masala, Oil<br>&amp; More</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/sauce.jpg"
+            alt=""></span><span>Sauces &amp;<br>Spreads</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/chicken.jpg"
+            alt=""></span><span>Chicken, Meat<br>&amp; Fish</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/organic.jpg"
+            alt=""></span><span>Organic &amp;<br>Healthy Living</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/baby_care.jpg"
+            alt=""></span><span>Baby Care</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/pharma.jpg"
+            alt=""></span><span>Pharma &amp;<br>Wellness</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/cleaning.jpg"
+            alt=""></span><span>Cleaning<br>Essentials</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/home.jpg"
+            alt=""></span><span>Home &amp;<br>Office</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/personal.jpg"
+            alt=""></span><span>Personal Care</span></a>
+      <a class="market-category" href="#"><span class="market-category-image"><img
+            src="assets/images/category/dog.jpg"
+            alt=""></span><span>Pet Care</span></a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container page-shell">
+      <div class="footer-mobile-brand" aria-label="Blinkit brand">
+        <h2>India’s last<br>minute app <i class="bi bi-heart-fill" aria-hidden="true"></i></h2>
+        <div class="footer-mobile-wordmark">blinkit</div>
+      </div>
+      <details class="footer-accordion" open>
+        <summary>India’s last minute app - blinkit</summary>
+        <div class="footer-content">
+          <section aria-labelledby="footer-useful-links">
+            <div class="footer-group-heading">
+              <h2 id="footer-useful-links">Useful Links</h2>
+            </div>
+            <ul class="footer-links">
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Partner</a></li>
+              <li><a href="#">Recipes</a></li>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Franchise</a></li>
+              <li><a href="#">Bistro</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Seller</a></li>
+              <li><a href="#">District</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Warehouse</a></li>
+              <li><a href="#">Blinkit Ambulance</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Deliver</a></li>
+              <li><a href="#">Feeding India</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Resources</a></li>
+              <li><a href="#">Eternal SBI Credit Card</a></li>
+            </ul>
+          </section>
+          <section aria-labelledby="footer-categories">
+            <div class="footer-group-heading">
+              <h2 id="footer-categories">Categories</h2><a href="#">see all</a>
+            </div>
+            <ul class="footer-links">
+              <li><a href="#">Bath &amp; Body</a></li>
+              <li><a href="#">Hair</a></li>
+              <li><a href="#">Skin &amp; Face</a></li>
+              <li><a href="#">Beauty &amp; Cosmetics</a></li>
+              <li><a href="#">Feminine Hygiene</a></li>
+              <li><a href="#">Baby Care</a></li>
+              <li><a href="#">Health &amp; Pharma</a></li>
+              <li><a href="#">Sexual Wellness</a></li>
+              <li><a href="#">Vegetables &amp; Fruits</a></li>
+              <li><a href="#">Atta, Rice &amp; Dal</a></li>
+              <li><a href="#">Oil, Ghee &amp; Masala</a></li>
+              <li><a href="#">Dairy, Bread &amp; Eggs</a></li>
+              <li><a href="#">Bakery &amp; Biscuits</a></li>
+              <li><a href="#">Dry Fruits &amp; Cereals</a></li>
+              <li><a href="#">Chicken, Meat &amp; Fish</a></li>
+              <li><a href="#">Kitchenware &amp; Appliances</a></li>
+              <li><a href="#">Chips &amp; Namkeen</a></li>
+              <li><a href="#">Sweets &amp; Chocolates</a></li>
+              <li><a href="#">Drinks &amp; Juices</a></li>
+              <li><a href="#">Tea, Coffee &amp; Milk Drinks</a></li>
+              <li><a href="#">Instant Food</a></li>
+              <li><a href="#">Sauces &amp; Spreads</a></li>
+              <li><a href="#">Paan Corner</a></li>
+              <li><a href="#">Ice Creams &amp; More</a></li>
+              <li><a href="#">Home &amp; Lifestyle</a></li>
+              <li><a href="#">Cleaners &amp; Repellents</a></li>
+              <li><a href="#">Electronics</a></li>
+              <li><a href="#">Stationery &amp; Games</a></li>
+              <li><a href="#">Print Store</a></li>
+              <li><a href="#">E-Gift Cards</a></li>
+              <li><a href="#">Rakhi Gifts</a></li>
+            </ul>
+          </section>
+        </div>
+      </details>
+    </div>
+    <div class="footer-bottom">
+      <div class="container page-shell footer-bottom-inner">
+        <div class="footer-copyright">© Blink Commerce Private Limited, 2016-2026</div>
+        <div class="footer-socials">
+          <div class="download-app">
+            <span>Download App</span>
+            <a class="store-badge" href="#"><i class="bi bi-apple"></i><span>App Store</span></a>
+            <a class="store-badge" href="#"><i class="bi bi-google-play"></i><span>Google Play</span></a>
+          </div>
+          <a class="social-link" href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a class="social-link" href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+          <a class="social-link" href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a class="social-link" href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a class="social-link" href="#" aria-label="Threads"><i class="bi bi-at"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="container page-shell footer-legal">
+      “Blinkit” is owned &amp; managed by “Blink Commerce Private Limited” and is not related, linked or interconnected
+      in whatsoever manner or nature, to “GROFFR.COM” which is a real estate services business operated by “Redstone
+      Consultancy Services Private Limited”.
+    </div>
+  </footer>
+</body>
+
+</html>
